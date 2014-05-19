@@ -20,9 +20,8 @@ polr
 
 ####Todos:
 
-- Update Self-hosted option w/ PaaS code
-- **Create a logo for Polr**
-- OOP-ize the shorten functions
+- Update Self-hosted option w/ PaaS code *currently being worked on*
+- Create a logo for Polr *currently being worked on (@sckasturi)*
 - Improve UCP
 - Better statistics
 - More links options
