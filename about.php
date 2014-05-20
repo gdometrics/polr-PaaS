@@ -42,7 +42,7 @@
                             <form action="loginproc.php" method="post" accept-charset="UTF-8">
                                 <input id="user_username" style="margin-bottom: 15px;" type="text" name="username" placeholder='Username' size="30" class="form-control">
                                 <input id="user_password" style="margin-bottom: 15px;" type="password" name="password" placeholder='Password' size="30" class="form-control">
-
+                                <input id="remember_me" style="margin-botton: 15px" type="checkbox" name="remember_me" value="remember_me" size="30" /> <label>Remember Me</label>
                                 <input class="btn btn-success form-control" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="login" value="Sign In">
                                 <br><br>
                             </form>
@@ -55,7 +55,7 @@
         </div>
         <div class="container">
             <div class="jumbotron" style="text-align:center; padding-top:80px; background-color: rgba(0,0,0,0);">
-                <h1>Polr</h1><br><p>Polr is an <a href='http://en.wikipedia.org/wiki/Open_source'>open source</a> URL shortener developed by <a href='http://cydrobolt.com'>Cydrobolt</a> and <a href='//github.com/Cydrobolt/polr/graphs/contributors'>these people</a>. <br>If you would like to contribute, please join us at #polr on irc.freenode.net:6667 (<a href='http://webchat.freenode.net/?channels=#polr'>Webchat</a>)<br>If you would like to use Polr on your own website, visit the Polr <a href='//project.polr.cf'>project website</a>. <br>The code is hosted at Github - <a href='http://github.com/Cydrobolt/polr'>here</a></p>
+                <h1>Polr</h1><br><p>Polr is an <a href='http://en.wikipedia.org/wiki/Open_source'>open source</a> URL shortener developed by <a href='http://cydrobolt.com'>Cydrobolt</a> and <a href='https://github.com/Cydrobolt/polr/graphs/contributors'>these people</a>. <br>If you would like to contribute, please join us at #polr on irc.freenode.net:6667 (<a href='http://webchat.freenode.net/?channels=#polr'>Webchat</a>)<br>If you would like to use Polr on your own website, visit the Polr <a href='//project.polr.cf'>project website</a>. <br>The code is hosted at Github - <a href='http://github.com/Cydrobolt/polr'>here</a></p>
                 <br><h2>Why Polr?</h2><br>
                 <div class="col-md-4"><b>Simple and minimalistic</b>
                     <p>Polr is developed with minimalism and simplicity in mind. Unlike many other URL Shorteners, 

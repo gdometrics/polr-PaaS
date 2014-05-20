@@ -15,6 +15,11 @@ if($authed==true) {
     $_SESSION['li'] = sha1('li');
     $_SESSION['username'] = $authcreds['username'];
     $_SESSION['role'] = $polrauth->getrole($authcreds['username']);
+    
+    if ($_POST['remember_me']=="remember_me") {
+        $polrauth->remember_me(); // "Remember" the user
+    }
+    
     header('Location:index.php');
 }
 else {

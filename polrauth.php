@@ -8,7 +8,7 @@ class polrauth {
     public $authcreds = [];
 
     public function islogged() {
-        if ($_SESSION['li'] !== sha1('li')) {
+        if (@$_SESSION['li'] !== sha1('li')) {
             return false;
         } else {
             $data['username'] = $_SESSION['username'];
@@ -16,28 +16,27 @@ class polrauth {
             return $data;
         }
     }
-    
+
     public function isadminli() {
         if ($_SESSION['li'] !== sha1('li')) {
             return false;
-        }
-        else {
-            if($_SESSION['role'] == 'adm') {
+        } else {
+            if ($_SESSION['role'] == 'adm') {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
     }
+
     public function isadmin($user) {
-        if($this->getrole($user)=='adm') {
+        if ($this->getrole($user) == 'adm') {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
+
     public function headblock() {
         if (is_array($this->islogged())) {
             echo "<!--";
@@ -63,12 +62,12 @@ class polrauth {
         $b = $mysqli->query($a) or showerror();
         $c = mysqli_fetch_assoc($b);
         $uv = $c['valid'];
-        if ((!$hpw)||(!$uv)) {
+        if ((!$hpw) || (!$uv)) {
             return false;
         }
 
         $pwf = password_verify($password, $hpw);
-        if ($pwf&&($uv=1)) {
+        if ($pwf && ($uv = 1)) {
             return true;
         } else {
             return false;
@@ -81,6 +80,12 @@ class polrauth {
         $b = $mysqli->query($a) or showerror();
         $c = mysqli_fetch_assoc($b);
         return $c['role'];
+    }
+
+    public function remember_me() {
+        // Extend the login session cookie to last 30 days
+        $params = session_get_cookie_params();
+        setcookie(session_name(), $_COOKIE[session_name()], time() + 60 * 60 * 24 * 30, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
     }
 
 }
