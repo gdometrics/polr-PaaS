@@ -76,12 +76,13 @@ if (isset($_GET['key']) && isset($_GET['username'])) {
     if ($userinfoc['rkey'] == $_GET['key']) {
         require_once 'header.php';
         echo "<h2>Change Password for {$_GET['username']}</h2>";
-        echo "<form action='forgotpass.php' method='POST'>"
-        . "<input type='password' name='npass' placeholder='New Password' class='faorm-control' size='50'/>"
-        . "<input type='password' name='rnpass' placeholder='Repeat New Password' class='faorm-control' size='50'/>"
+        echo "<form action='forgotpass.php' method='POST' class='form-inline' role='form'>"
+        . "<input type='password' name='npass' id='npass' placeholder='New Password' style='width: 250px;' class='form-control' size='50'/>"
+        . "<input type='password' name='rnpass' id='rnpass' placeholder='Repeat New Password' style='width: 250px;' class='form-control' size='50'/>"
         . "<input type='hidden' name='crkey' value='{$_GET['key']}' />"
         . "<input type='hidden' name='cuser' value='{$username}' />"
-        . "<input type='submit' value='Change Password' />"
+        . "<br /><div id='warn' style='padding-top: 30px;'></div></br />"
+        . "<input type='submit' id='submit' class='form-control' style='width: 450px;' value='Change Password' />"
         . "</form>";
         echo "<script src='fpass.js'></script>";
         require_once 'footer.php';
