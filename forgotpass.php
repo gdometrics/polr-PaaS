@@ -98,9 +98,9 @@ if (isset($_GET['key']) && isset($_GET['username'])) {
 if (!$email) {
     echo "<h2>Forgot your password?</h2>"
     . "<br/ >"
-    . "<form action='forgotpass.php' method='POST'>"
-    . "<input type='text' name='email' placeholder='Email...' />"
-    . "<input type='submit' value='Get a password reset email' />"
+    . "<form action='forgotpass.php' method='POST' style='margin:0 auto; width: 450px'>"
+    . "<input type='text' class='form-control' style='width: 450px;' name='email' placeholder='Email...' /><br />"
+    . "<input type='submit' class='form-control' style='width: 450px;' value='Get a password reset email' />"
     . "</form>";
 
     require_once 'footer.php';
