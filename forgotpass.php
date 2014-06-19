@@ -5,12 +5,17 @@ require_once 'polrauth.php'; // require auth libs
 require_once 'sgmail.php'; // require mail libs
 require_once 'password.php'; // require password encryption libs
 require_once 'fpasslib.php'; // require fpass functions
+require_once('ayah.php');
+$ayah = new AYAH();
+
+$ayahhtml = $ayah->getPublisherHTML();
 
 $polrauth = new polrauth();
 $fpass = new fpass();
 require_once 'header.php';
 
 if (isset($_POST['rnpass']) && isset($_POST['npass']) && isset($_POST['crkey']) && isset($_POST['cuser'])) {
+    // if submitting new pw
     $ckey = $mysqli->real_escape_string($_POST['crkey']);
     $rnpass = $mysqli->real_escape_string($_POST['rnpass']);
     $cuser = $mysqli->real_escape_string($_POST['cuser']);
@@ -96,34 +101,26 @@ if (isset($_GET['key']) && isset($_GET['username'])) {
  */
 @$email = $_POST['email'];
 if (!$email) {
+    // if requesting form
     echo "<h2>Forgot your password?</h2>"
     . "<br/ >"
     . "<form action='forgotpass.php' method='POST' style='margin:0 auto; width: 450px'>"
     . "<input type='text' class='form-control' style='width: 450px;' name='email' placeholder='Email...' /><br />"
-    . "<input type='submit' class='form-control' style='width: 450px;' value='Get a password reset email' />"
+    . $ayahhtml
+    . "<input type='submit' name='fpasssubmit' class='form-control' style='width: 450px;' value='Get a password reset email' />"
     . "</form>";
 
     require_once 'footer.php';
     die();
 }
-if (isset($_POST['email']) == false) {
-    echo "<h2>Forgot your password?</h2>"
-    . "<br/ >"
-    . "<form action='forgotpass.php' method='POST'>"
-    . "<input type='text' name='email' placeholder='Email...' />"
-    . "<input type='submit' value='Get a password reset email' />"
-    . "</form>";
 
-    require_once 'footer.php';
-    die();
-}
 
 if (strlen($email) < 5) {
     echo "<h2>Forgot your password?</h2>"
     . "<br/ >"
     . "<form action='forgotpass.php' method='POST'>"
     . "<input type='text' name='email' placeholder='Email...' />"
-    . "<input type='submit' value='Get a password reset email' />"
+    . "<input type='submit' name='fpasssubmit' value='Get a password reset email' />"
     . "</form>";
 
     require_once 'footer.php';
@@ -141,7 +138,24 @@ if ($userinfo == false) {
     require_once 'footer.php';
     die();
 }
-
+if (array_key_exists('fpasssubmit', $_POST))
+{
+          // Use the AYAH object to see if the user passed or failed the game.
+          $score = $ayah->scoreResult();
+          if ($score)
+          {
+              $passed = 1;
+              }
+          else
+          {
+                  require_once 'req.php';
+                  require_once 'header.php';
+                  echo "Sorry, but we were not able to verify you as human. Please try again. <br><br><a href='forgotpass.php'>Go Back</a>";
+                  require_once 'footer.php';
+                  die(); // it's a robot! die!!
+                  
+          }
+}
 $rkey = $userinfo['rkey'];
 $username = $userinfo['username'];
 $fpass->sendfmail($email, $username, $rkey); // send the email
