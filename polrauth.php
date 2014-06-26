@@ -47,7 +47,17 @@ class polrauth {
         if (is_array($this->islogged())) {
             $authinfo = $this->islogged();
             echo "-->";
-            $text = '<a href="ucp.php" class="btn btn-success btn-default"><span class="glyphicon glyphicon-off"></span> Logged in as ' . $authinfo['username'] . '</a><a href="logout.php" class="btn btn-success btn-default">Logout</a>';
+            $text = '<div class=\'nav pull-right navbar-nav\' style=\'color: white\'>
+        <li class=\'dropdown\'>
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown" style=\'padding-right: 10px\'>'.$authinfo['username'].' <strong class="caret"></strong></a>
+
+            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                <li><a tabindex="-1" href="ucp.php">Dashboard</a></li>
+                <li><a tabindex="-1" href="ucp.php">Settings</a></li>
+                <li><a tabindex="-1" href="logout.php">Logout</a></li>
+            </ul>
+        </li>
+        </div>';
             echo $text;
         }
     }
