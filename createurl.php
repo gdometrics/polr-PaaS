@@ -8,14 +8,26 @@ $dnsbl = new dnsbl();
 $protocol = '://';
 $hpi = $_POST['hp'];
 $country_code = @$_SERVER["HTTP_CF_IPCOUNTRY"];
+function bve($bv) {
+    global $mysqli;
+    $query1 = "SELECT `rid` FROM `redirinfo` WHERE baseval='{$bv}'"; // Check if exists natura
+    $result = $mysqli->query($query1);
+    $row = mysqli_fetch_assoc($result);
+    $existing = $row['rid'];
+    if ($existing != NULL ) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 
 if(!strstr($_POST['urlr'], $protocol)) {
-    
-    $urlr = "http".$protocol.trim($_POST['urlr']); //add http:// if :// not there
+    $urlr = "http".$protocol.$_POST['urlr']; //add http:// if :// not there
 }
 else {
-    $urlr = trim($_POST['urlr']);
+    $urlr = $_POST['urlr'];
 }
 if(!filterurl($urlr)) {
     echo "You entered an invalid url<br>";
@@ -53,12 +65,12 @@ $isshort = array('polr.cf','bit.ly','is.gd','tiny.cc','adf.ly','ur1.ca','goo.gl'
 
 foreach ($isshort as $url_shorteners) {
     if(strstr($urlr, $protocol.$url_shorteners)) {
-    echo "You entered an already shortened URL.<br>";
-    echo "<a href='index.php'>Back</a>";
-    die();
+        echo "You entered an already shortened URL.<br>";
+        echo "<a href='index.php'>Back</a>";
+        die();
     }
 }
-$query1 = "SELECT rid FROM redirinfo WHERE rurl='{$urlr}' AND iscustom='no'";
+$query1 = "SELECT rid FROM redirinfo WHERE rurl='{$urlr}' AND iscustom='no'"; // Check if exists naturally
 $result = $mysqli->query($query1);
 $row = mysqli_fetch_assoc($result);
 $existing = $row['rid'];
@@ -83,11 +95,25 @@ if($customurl!="") {
 }
 
 if(!$existing || $customurl!="") {
-	$query1 = "SELECT MAX(rid) AS rid FROM redirinfo;";
+        // If does not exist or creating custom URL
+	$query1 = "SELECT MAX(rid) AS `rid` FROM `redirinfo` WHERE `iscustom`='no';";
 	$result = $mysqli->query($query1);
 	$row = mysqli_fetch_assoc($result);
 	$ridr = $row['rid'];
-	$baseval = base_convert($ridr+1,10,36);
+        $q_checkbv = "SELECT `baseval` FROM `redirinfo` WHERE `rid`='{$ridr}';";
+        $perform_cbv = $mysqli->query($q_checkbv);
+        $cbvr = mysqli_fetch_assoc($perform_cbv);
+        $based_val = $cbvr['baseval'];
+        $nbnum = base_convert($based_val,36,10);
+        $baseval = base_convert($nbnum+1,10,36);
+        while (bve($baseval) == true) {
+            $nbnum = base_convert($baseval,36,10);
+            $baseval = base_convert($nbnum+1,10,36);
+            
+        }
+        
+        
+        
         
         if($customurl!="") {
             $baseval = $customurl;
@@ -103,6 +129,8 @@ if(!$existing || $customurl!="") {
         }
         
         $query2 = "INSERT INTO redirinfo (baseval,rurl,ip,user,iscustom,country) VALUES ('{$baseval}','{$urlr}','{$ip}','{$userinfo['username']}','{$iscustom}','{$country_code}');";
+        
+        
         $result2r = $mysqli->query($query2) or showerror();
         $basewsa = base64_encode($wsa);
         $basebv =base64_encode($baseval);
