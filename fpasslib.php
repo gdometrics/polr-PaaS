@@ -15,7 +15,7 @@ class fpass {
         $subject = 'Polr Password Recovery';
         $message = 'Hello,<br /><br />'
                 . "Someone has requested a password reset email (IP: $ip)<br />"
-                . "To recover your password, click here: <a href='http://polr.cf/forgotpass.php?key=$rkey&username=$username'>http://polr.cf/forgotpass.php?key=$rkey&username=$username</a><br />"
+                . "To recover your password, click here: <a href='http://polr.me/forgotpass.php?key=$rkey&username=$username'>http://polr.cf/forgotpass.php?key=$rkey&username=$username</a><br />"
                 . "If this was not you, no further action is needed. If you are constantly receiving these emails, but did not request<br />"
                 . "a new password, please email support@polr.cf with the IP printed above. <br />"
                 . "<br />"

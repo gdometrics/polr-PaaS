@@ -40,7 +40,7 @@ if (!is_array($auth->islogged())) {
     if ($isadmin == true) {
         echo '<li><a href="#adminpanel" data-toggle="tab">Admin Panel</a></li>';
 
-        function fetchurlsadmin($lstart = 0, $limit = 360) {
+        function fetchurlsadmin($lstart = 0, $limit = 720) {
             global $mysqli;
             $sqr = "SELECT `baseval`,`rurl`,`date`,`user`,`ip` FROM `redirinfo` LIMIT {$lstart} , {$limit};";
             $res = $mysqli->query($sqr);

@@ -87,7 +87,7 @@ $reg['password'] = $hashed;
 
 $qr = "INSERT INTO auth (username,email,password,rkey,valid,ip) VALUES ('{$reg['username']}','{$reg['email']}','{$hashed}','{$reg['rkey']}','0', '{$ip}');";
 $rr = $mysqli->query($qr) or showerror();
-$sglink = "http://polr.cf/activate.php?key=".$reg['rkey'].'&user='.$reg['username'];
+$sglink = "http://polr.me/activate.php?key=".$reg['rkey'].'&user='.$reg['username'];
 $sgmsg = "Please validate your Polr Account by clicking the link below or pasting it into your browser:<br>"
         .'<a href="'.$sglink.'">'.$sglink.'</a>'
         . "<br><br>If you did not register at Polr (<a href='//polr.cf'>Polr.cf</a>), please disregard this email."
