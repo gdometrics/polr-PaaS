@@ -88,12 +88,17 @@ if (!is_array($auth->islogged())) {
   <div class="tab-pane" id="links"><br>' . $linkshtml . '</div>
   
   <div class="tab-pane" id="messages"><br><b>You have <span style="color:green">no new messages</span>.</b></div>
-  <div class="tab-pane" id="settings"><br><b>Settings:</b><br><br><form action="ucp-settings.php" method="POST">
-  <!--Current Password: <input type="password" name="cpw" /><br>New Password: <input type="password" name="npw" />--><a href="forgotpass.php">Change Password</a>
+  <div class="tab-pane" id="settings"><br><b>Settings:</b><br><br>
+  <h3>Change password</h3>
+<form action=\'ucp-settingsp.php\' method=\'POST\'>
+    <input type=\'hidden\' name=\'action\' value=\'changepw\' />
+    Old Password: <input type=\'password\' name=\'currpw\' />
+    New Password: <input type=\'password\' name=\'newpw\' />
+    <input type=\'submit\' class=\'btn btn-success\'/>
+</form>
   <br><br>Theme: <select name="theme"><option value="cosmo">Aurora (Default)</option><option value="flatly">Light Slopes</option>
   <option value="yeti">Metro Shift</option><option value="darkly">Dark Slopes</option></select><br><input type="hidden" value="setchg" name="setchg" />
-  <br><br><input type="submit" class="btn-success btn-lg" disabled="disabled"/>
-</form></div>';
+  <br><br></div>';
     if ($isadmin == true) {
         $sessiondump = "";
         foreach ($_SESSION as $sevar) {
