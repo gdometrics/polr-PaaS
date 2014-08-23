@@ -34,8 +34,8 @@
                 </a>-->
 
                 <ul class="nav navbar-collapse navbar-nav" id="nbc">
-                    <li><a href="//github.com/Cydrobolt/polr">Github</a></li>
-                    <li><a href="//project.polr.cf">Source</a></li>
+                    <li><a href="//github.com/Cydrobolt/polr-PaaS">Github</a></li>
+                    <li><a href="//project.polr.me">Source</a></li>
                     <li><a href="about.php">About</a></li><li><a href="contact.php">Contact</a></li>
                 </ul>
                 <ul class="nav pull-right navbar-nav">
