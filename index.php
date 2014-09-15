@@ -87,7 +87,7 @@
                 <form id='shortenform' method="POST" action="createurl.php" role="form">
                     <input type="text" class="form-control" placeholder="URL" id="url" value="http://" name="urlr" />
                     <div id='options'>
-                        <br>Customize link: <br><div style='color: green'><h2 style='display:inline'>polr.cf/</h2><input type='text' id='custom' title='After entering your custom ending, if the ending is available, enter your long URL into box above and press "Shorten"!' name='custom' /><br>
+                        <br>Customize link: <br><div style='color: green'><h2 style='display:inline'>polr.me/</h2><input type='text' id='custom' title='After entering your custom ending, if the ending is available, enter your long URL into box above and press "Shorten"!' name='custom' /><br>
                             <a href="#" class="btn btn-inverse btn-sm" id='checkavail'>Check Availability</a><div id='status'></div></div>
                     </div>
                     <br><input type="submit" class="btn btn-info" id='shorten' value="Shorten!"/>   <a href="#" class="btn btn-warning" id='showoptions'>Link Options</a>
