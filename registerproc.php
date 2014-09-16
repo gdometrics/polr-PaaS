@@ -90,7 +90,7 @@ $rr = $mysqli->query($qr) or showerror();
 $sglink = "http://polr.me/activate.php?key=".$reg['rkey'].'&user='.$reg['username'];
 $sgmsg = "Please validate your Polr Account by clicking the link below or pasting it into your browser:<br>"
         .'<a href="'.$sglink.'">'.$sglink.'</a>'
-        . "<br><br>If you did not register at Polr (<a href='//polr.cf'>Polr.cf</a>), please disregard this email."
+        . "<br><br>If you did not register at Polr (<a href='//polr.cf'>Polr.me</a>), please disregard this email."
         . "<br>";
 $to = $reg['email'];
 $sm = $sgmail->sendmail($to, 'Polr Account Validation',$sgmsg);
