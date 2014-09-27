@@ -100,7 +100,7 @@ function shorten($urlr, $t = 'false') {
     global $ip;
     
     $protocol = '://';
-    $isshort = array('polr.cf', 'bit.ly', 'is.gd', 'tiny.cc', 'adf.ly', 'ur1.ca', 'goo.gl', 'ow.ly', 'j.mp', 't.co');
+    $isshort = array('polr.cf', 'polr.me', 'bit.ly', 'is.gd', 'tiny.cc', 'adf.ly', 'ur1.ca', 'goo.gl', 'ow.ly', 'j.mp', 't.co', 'polr.me');
     foreach ($isshort as $url_shorteners) {
         if (strstr($urlr, $protocol . $url_shorteners)) {
             header("HTTP/1.0 400 Bad Request");

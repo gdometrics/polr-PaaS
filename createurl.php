@@ -7,7 +7,10 @@ $polrauth = new polrauth();
 $dnsbl = new dnsbl();
 $protocol = '://';
 $hpi = $_POST['hp'];
+$ps = $_POST['options']; // if p, public, if s, private (4). saved in "lkey", limit 500
 $country_code = @$_SERVER["HTTP_CF_IPCOUNTRY"];
+$_POST['ps'] = $ps;
+
 function bve($bv) {
     global $mysqli;
     $query1 = "SELECT `rid` FROM `redirinfo` WHERE baseval='{$bv}'"; // Check if exists natura
@@ -21,7 +24,14 @@ function bve($bv) {
         return false;
     }
 }
+function rStr($length = 4) {
+    return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
+}
 
+if($ps == "s") {
+	// if secret url
+	$rstr = rStr(4);
+}
 
 if(!strstr($_POST['urlr'], $protocol)) {
     $urlr = "http".$protocol.$_POST['urlr']; //add http:// if :// not there
@@ -61,7 +71,7 @@ else {
 $urlr = $mysqli->real_escape_string($urlr);
 //Other URL Shorteners List Array
 
-$isshort = array('polr.cf','bit.ly','is.gd','tiny.cc','adf.ly','ur1.ca','goo.gl','ow.ly','j.mp','t.co');
+$isshort = array('polr.cf','bit.ly','is.gd','tiny.cc','adf.ly','ur1.ca','goo.gl','ow.ly','j.mp','t.co', 'polr.me');
 
 foreach ($isshort as $url_shorteners) {
     if(strstr($urlr, $protocol.$url_shorteners)) {
@@ -94,12 +104,13 @@ if($customurl!="") {
         }
 }
 
-if(!$existing || $customurl!="") {
-        // If does not exist or creating custom URL
-	$query1 = "SELECT MAX(rid) AS `rid` FROM `redirinfo` WHERE `iscustom`='no';";
-	$result = $mysqli->query($query1);
-	$row = mysqli_fetch_assoc($result);
-	$ridr = $row['rid'];
+if(!$existing || $customurl!="" || $ps=="s") {
+        // If does not exist or creating custom URL. If requesting a secret link, recreate as well.
+		$query1 = "SELECT MAX(rid) AS `rid` FROM `redirinfo` WHERE `iscustom`='no';";
+		$result = $mysqli->query($query1);
+		$row = mysqli_fetch_assoc($result);
+		$ridr = $row['rid'];
+		// Check if next URL in base32 has been occupied by a custom url
         $q_checkbv = "SELECT `baseval` FROM `redirinfo` WHERE `rid`='{$ridr}';";
         $perform_cbv = $mysqli->query($q_checkbv);
         $cbvr = mysqli_fetch_assoc($perform_cbv);
@@ -113,9 +124,9 @@ if(!$existing || $customurl!="") {
         }
         
         
-        
-        
+
         if($customurl!="") {
+			// creating custom URL?
             $baseval = $customurl;
             $iscustom = "yes";
             $query = "SELECT rid FROM redirinfo WHERE baseval='{$customurl}'"; //check if baseval used already
@@ -127,11 +138,15 @@ if(!$existing || $customurl!="") {
                 die();
             }
         }
+        if($ps == "p" || !$ps) {
+			$query2 = "INSERT INTO redirinfo (baseval,rurl,ip,user,iscustom,country) VALUES ('{$baseval}','{$urlr}','{$ip}','{$userinfo['username']}','{$iscustom}','{$country_code}');";
+        }
+        else if($ps=="s") {
+			$query2 = "INSERT INTO redirinfo (baseval,rurl,ip,user,iscustom,lkey,country) VALUES ('{$baseval}','{$urlr}','{$ip}','{$userinfo['username']}','{$iscustom}','{$rstr}','{$country_code}');";
+			$baseval .= "?".$rstr;
+        }
         
-        $query2 = "INSERT INTO redirinfo (baseval,rurl,ip,user,iscustom,country) VALUES ('{$baseval}','{$urlr}','{$ip}','{$userinfo['username']}','{$iscustom}','{$country_code}');";
-        
-        
-        $result2r = $mysqli->query($query2) or showerror();
+        $result2r = $mysqli->query($query2);// or showerror();
         $basewsa = base64_encode($wsa);
         $basebv =base64_encode($baseval);
         echo "<input type='hidden' value='$basebv' id='j' /><input type='hidden' value='$basewsa' id='k' />";
@@ -139,6 +154,7 @@ if(!$existing || $customurl!="") {
         echo "<div style='text-align:center'>URL: <input type='text' id='i' onselect=\"select_text();\" onclick=\"select_text();\" readonly=\"readonly\" class='form-control' value=\"Please enable Javascript\" />";
         }
 else {
+	// Already exists. Fetch from DB and send over.
     $query1 = "SELECT baseval FROM redirinfo WHERE rurl='{$urlr}' AND iscustom='no'";
     $result = $mysqli->query($query1);
     $row = mysqli_fetch_assoc($result);

@@ -26,9 +26,9 @@
         <script src='mpjs.js'></script>
         <link rel="shortcut icon" href="favicon.ico">
         <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
         <script>
             $(function() {
@@ -40,6 +40,33 @@
                     e.stopPropagation();
                 });
             });
+            $(document).ready(function () {
+				$('.btn-toggle').click(function() {
+					$(this).find('.btn').toggleClass('active');  
+					
+					if ($(this).find('.btn-primary').size()>0) {
+						$(this).find('.btn').toggleClass('btn-primary');
+					}
+					if ($(this).find('.btn-danger').size()>0) {
+						$(this).find('.btn').toggleClass('btn-danger');
+					}
+					if ($(this).find('.btn-success').size()>0) {
+						$(this).find('.btn').toggleClass('btn-success');
+					}
+					if ($(this).find('.btn-info').size()>0) {
+						$(this).find('.btn').toggleClass('btn-info');
+					}
+					
+					$(this).find('.btn').toggleClass('btn-default');
+				   
+				});
+/*
+				$('form').submit(function(){
+					alert($(this["ps"]).val());
+					return false;
+				});
+				*/
+			});
         </script>
     </head>
     <body style="padding-top:60px">
@@ -87,7 +114,16 @@
                 <form id='shortenform' method="POST" action="createurl.php" role="form">
                     <input type="text" class="form-control" placeholder="URL" id="url" value="http://" name="urlr" />
                     <div id='options'>
-                        <br>Customize link: <br><div style='color: green'><h2 style='display:inline'>polr.me/</h2><input type='text' id='custom' title='After entering your custom ending, if the ending is available, enter your long URL into box above and press "Shorten"!' name='custom' /><br>
+                        <br>Customize link: <br>
+                        <div class="btn-group btn-toggle" data-toggle="buttons">
+							<label class="btn btn-primary btn-sm active">
+							  <input type="radio" name="options" value="p" checked=""> Public
+							</label>
+							<label class="btn btn-sm btn-default">
+							  <input type="radio" name="options" value="s"> Secret
+							</label>
+					    </div> <br /><br />
+                        <div style='color: green'><h2 style='display:inline'>polr.me/</h2><input type='text' id='custom' title='After entering your custom ending, if the ending is available, enter your long URL into box above and press "Shorten"!' name='custom' /><br>
                             <a href="#" class="btn btn-inverse btn-sm" id='checkavail'>Check Availability</a><div id='status'></div></div>
                     </div>
                     <br><input type="submit" class="btn btn-info" id='shorten' value="Shorten!"/>   <a href="#" class="btn btn-warning" id='showoptions'>Link Options</a>

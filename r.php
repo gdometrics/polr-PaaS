@@ -1,5 +1,5 @@
 <?php
-
+// put two options, one with ? one without
 //POLR Redirector CORE
 require_once('req.php');
 require_once('dnsbl.php');
@@ -14,7 +14,7 @@ if (is_string($_GET['u'])) {
 if (strstr($val, "t-")) {
     $query = "SELECT rurl FROM `redirinfo-temp` WHERE baseval='{$val}'";
 } else {
-    $query = "SELECT rurl FROM redirinfo WHERE baseval='{$val}'";
+    $query = "SELECT rurl,lkey FROM redirinfo WHERE baseval='{$val}'";
 }
 $result = $mysqli->query($query) or showerror();
 
@@ -24,6 +24,23 @@ $row = mysqli_fetch_assoc($result);
 if (!$row['rurl'] && $_GET['u'] != 'malwaretest' && $_GET['u'] != 'phishingtest') {
     header("Location: 404.php", true, 302);
 } else {
+	$lkey = @$row['lkey'];
+	// Check for a key requirement
+	if (strlen($lkey)>1) {
+		// Key needed? Check for it
+		$sent_lkey = isset($_GET[$lkey]);
+		if ($sent_lkey) {
+			// yup, right key...continue on
+		}
+		else {
+			require_once('header.php');
+			echo "Incorrect Key ($sent_lkey). (http://polr.me/abc?keyhere)";
+			require_once('footer.php');
+			die();
+		}
+	}
+		
+	
     $isbl = $dnsbl->isbl($row['rurl']);
     //Testing Module Start
     if ($_GET['u'] === 'malwaretest') {
