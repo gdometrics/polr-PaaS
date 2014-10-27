@@ -8,14 +8,18 @@ if (is_string($_GET['bv']) && ctype_alnum($_GET['bv'])) {
     require_once 'footer.php';
     die();
 }
-$query = "SELECT `clicks`,`country`,`rurl` FROM redirinfo WHERE baseval='{$bv}';";
+$query = "SELECT `clicks`,`country`,`rurl`,`lkey` FROM redirinfo WHERE baseval='{$bv}';";
 $result = $mysqli->query($query);
 $row = mysqli_fetch_assoc($result);
 if(!$row) {
     echo "404 Not Found";
     require_once 'footer.php';die();
 }
-
+if(strlen($row['lkey'])>1) {
+	echo "Cannot show stats for secret URL";
+	require_once('footer.php');
+	die();
+}
 if(!$row['user']) {
     $row['user'] = '<i>Anonymous</i>';
 }
