@@ -28,7 +28,7 @@ if(!$row['country']) {
 }
 
 
-echo "<h2 style='display:inline'>Link Stats for </h2><h2 style='color:green'>polr.cf/".$bv.'</h2><p class="text-muted">'.$row['rurl'].'</p><br>';
+echo "<h2 style='display:inline'>Link Stats for </h2><h2 style='color:green'>polr.me/".$bv.'</h2><p class="text-muted">'.$row['rurl'].'</p><br>';
 echo "<div class='col-md-4'><h2>Clicks</h2><span style='color:blue'>{$row['clicks']}</span></div>";
 echo "<div class='col-md-4'><h2>Created by</h2><span style='color:red'>{$row['user']}</span></div>";
 echo "<div class='col-md-4'><h2>Country</h2><span style='color:grey'>{$row['country']}</span></div>";
