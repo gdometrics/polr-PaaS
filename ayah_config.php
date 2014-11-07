@@ -10,4 +10,4 @@ define( 'AYAH_SCORING_KEY', '##HIDDEN - STOP PEEKING! ##');
 define( 'AYAH_WEB_SERVICE_HOST', '##HIDDEN - STOP PEEKING! ##');
 define( 'AYAH_TIMEOUT', 0);
 define( 'AYAH_DEBUG_MODE', FALSE);
-define( 'AYAH_USE_CURL', TRUE);
+define( 'AYAH_USE_CURL', FALSE);
