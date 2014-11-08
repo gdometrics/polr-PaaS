@@ -4,7 +4,7 @@ $host = "##HIDDEN - STOP PEEKING! ##";
 $user = "##HIDDEN - STOP PEEKING! ##";
 $passwd = "##HIDDEN - STOP PEEKING! ##";
 $db = "polr";
-$wsa = "polr.cf";
+$wsa = "polr.me";
 $debug = 0;
 $headers = apache_request_headers();
 $ip = $headers['CF-Connecting-IP'];
@@ -31,18 +31,19 @@ function sqlrun($query) {
     return true;
 }
 
+
 function sqlex($table, $rowf, $where, $wval) {
-	// Check whether a certain row/column exists
-	// Look at SQLFetch for variable def's
     global $mysqli; //Import var into function
 //Sanitize strings
     $rowfs = $mysqli->real_escape_string($rowf);
     $tables = $mysqli->real_escape_string($table);
     $wheres = $mysqli->real_escape_string($where);
     $wvals = $mysqli->real_escape_string($wval);
-
-    $query = "SELECT $rowfs FROM $tables WHERE $wheres='$wvals'";
-    $result = $mysqli->query($query) or showerror();
+    $q2p = "SELECT ? FROM ? WHERE ?=?";
+    $stmt = $mysqli->prepare($q2p);
+    $stmt->bind_param('ssss', $rowfs, $tables, $wheres, $wvals);
+    $stmt->execute();
+    $result = $stmt->get_result() or showerror();
     $numrows = $result->num_rows;
     if (!$numrows) {
         return false;
@@ -52,14 +53,6 @@ function sqlex($table, $rowf, $where, $wval) {
 }
 
 function sqlfetch($table, $rowf, $where, $wval) {
-	/*
-     * Fetch a value from the database
-     * Takes 4 arguments:
-     * $table : table in question
-     * $rowf = row to fetch
-     * $where = the 'where' value, as in WHERE $where = $wval
-     * $wval = the value of the $where val ^
-     */
     global $mysqli;
 
     $rowfs = $mysqli->real_escape_string($rowf);
@@ -67,12 +60,15 @@ function sqlfetch($table, $rowf, $where, $wval) {
     $wheres = $mysqli->real_escape_string($where);
     $wvals = $mysqli->real_escape_string($wval);
 
-    $query = "SELECT $rowfs FROM $tables WHERE $wheres='$wvals'";
-    $result = $mysqli->query($query) or showerror();
+    //$query = "SELECT $rowfs FROM $tables WHERE $wheres='$wvals'";
+    $q2p = "SELECT ? FROM ? WHERE ?=?";
+    $stmt = $mysqli->prepare($q2p);
+    $stmt->bind_param('ssss', $rowfs, $tables, $wheres, $wvals);
+    $stmt->execute();
+    $result = $stmt->get_result() or showerror();
     $row = mysqli_fetch_assoc($result);
     return $row[$rowf];
 }
-
 function showerror() {
 	//Show an error, and die. If Debug is on, show SQL error message
     global $debug;
