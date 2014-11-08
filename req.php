@@ -31,7 +31,6 @@ function sqlrun($query) {
     return true;
 }
 
-
 function sqlex($table, $rowf, $where, $wval) {
     global $mysqli; //Import var into function
 //Sanitize strings
@@ -39,11 +38,11 @@ function sqlex($table, $rowf, $where, $wval) {
     $tables = $mysqli->real_escape_string($table);
     $wheres = $mysqli->real_escape_string($where);
     $wvals = $mysqli->real_escape_string($wval);
-    $q2p = "SELECT ? FROM ? WHERE ?=?";
-    $stmt = $mysqli->prepare($q2p);
-    $stmt->bind_param('ssss', $rowfs, $tables, $wheres, $wvals);
-    $stmt->execute();
-    $result = $stmt->get_result() or showerror();
+    $q2p = "SELECT {$rowfs} FROM {$tables} WHERE {$wheres}=?";
+	$stmt = $mysqli->prepare($q2p);
+	$stmt->bind_param('s', $wvals);
+	$stmt->execute();
+	$result = $stmt->get_result();
     $numrows = $result->num_rows;
     if (!$numrows) {
         return false;
@@ -61,11 +60,11 @@ function sqlfetch($table, $rowf, $where, $wval) {
     $wvals = $mysqli->real_escape_string($wval);
 
     //$query = "SELECT $rowfs FROM $tables WHERE $wheres='$wvals'";
-    $q2p = "SELECT ? FROM ? WHERE ?=?";
-    $stmt = $mysqli->prepare($q2p);
-    $stmt->bind_param('ssss', $rowfs, $tables, $wheres, $wvals);
-    $stmt->execute();
-    $result = $stmt->get_result() or showerror();
+    $q2p = "SELECT {$rowfs} FROM {$tables} WHERE {$wheres}=?";
+	$stmt = $mysqli->prepare($q2p);
+	$stmt->bind_param('s', $wvals);
+	$stmt->execute();
+	$result = $stmt->get_result();
     $row = mysqli_fetch_assoc($result);
     return $row[$rowf];
 }
